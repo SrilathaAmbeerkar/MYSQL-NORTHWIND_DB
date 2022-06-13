@@ -1,0 +1,268 @@
+1Q) Which Shippers do we have?
+We have a table called shippers. Return all the feilds from all the shippers.
+
+Solution:
+Select * from Shippers;
+
+2Q) Certain feilds from categories table?
+In the Categories table, selecting all the fields using this SQL:
+Select * from Categories
+…will return 4 columns. We only want to see two columns,
+CategoryName and Description.
+
+Solution:
+Select 
+  Category_Name,
+  Description
+from Categories;
+
+3Q) Sales Representatives
+We’d like to see just the FirstName, LastName, and HireDate of all the
+employees with the Title of Sales Representative. Write a SQL
+statement that returns only those employees.
+
+
+Solution:
+Select 
+  First_name,
+  Last_name,
+  Hire_date
+from Employees
+ Where title='sales representative';
+
+
+Select 
+  First_name,
+  Last_name,
+  Hire_date,
+  title
+from Employees
+ Where title='sales representative';
+
+
+4Q) Sales Representatives in the United States
+Now we’d like to see the same columns as above, but only for those
+employees that both have the title of Sales Representative, and also are
+in the United States.
+
+Solution:
+Select 
+  First_name,
+  Last_name,
+  Hire_date
+from Employees
+ Where title='sales representative' and country='USA';
+
+
+Select 
+  First_name,
+  Last_name,
+  Hire_date,
+  title,
+  Country
+from Employees
+ Where title='sales representative' and country='USA';
+
+
+
+5Q) Orders placed by specific EmployeeID
+Show all the orders placed by a specific employee. The EmployeeID for
+this Employee (Steven Buchanan) is 5.
+
+Solution:
+Select * from Orders where employee_id=5;
+
+
+But as per the question mentioned in the book the solution should only contain two rows which is orderid and Orderdate. The below syntax can be used to get the same solution.
+
+Solution:
+Select 
+ order_id,
+ order_date
+from Orders 
+ where employee_id=5;
+
+
+6Q) Suppliers and ContactTitles
+In the Suppliers table, show the SupplierID, ContactName, and
+ContactTitle for those Suppliers whose ContactTitle is not Marketing
+Manager.
+
+Solution:
+Select 
+ supplier_id,
+ contact_name,
+ Contact_title
+from suppliers 
+ where contact_title!='Marketing Manager';
+
+7Q) Products with “queso” in ProductName
+In the products table, we’d like to see the ProductID and ProductName
+for those products where the ProductName includes the string “queso”.
+
+Solution:
+elect 
+ Product_id,
+ Product_Name
+from Products 
+ where Product_name like "queso%";
+
+8Q) Orders shipping to France or Belgium
+Looking at the Orders table, there’s a field called ShipCountry. Write a
+query that shows the OrderID, CustomerID, and ShipCountry for the
+orders where the ShipCountry is either France or Belgium.
+
+Solution:
+Select
+  Order_id,
+  Customer_id,
+  Ship_Country
+from Orders
+ Where Ship_country='France' or ship_Country='Belgium';
+
+9Q) Orders shipping to any country in Latin America
+Now, instead of just wanting to return all the orders from France of
+Belgium, we want to show all the orders from any Latin American
+country. But we don’t have a list of Latin American countries in a table
+in the Northwind database. So, we’re going to just use this list of Latin
+American countries that happen to be in the Orders table:
+Brazil
+Mexico
+Argentina
+Venezuela
+It doesn’t make sense to use multiple Or statements anymore, it would
+get too convoluted. Use the In statement.
+
+Solution:
+Select
+  Order_id,
+  Customer_id,
+  Ship_Country
+from Orders
+ Where Ship_country in ('Brazil', 'Mexico', 'Argentina', 'Venezuela');
+
+
+10Q) Employees, in order of age
+For all the employees in the Employees table, show the FirstName,
+LastName, Title, and BirthDate. Order the results by BirthDate, so we
+have the oldest employees first.
+
+Solution:
+
+select
+First_name,
+Last_name,
+Title_of_courtesy,
+Birth_date
+from employees
+order by birth_date asc;
+
+11Q) Showing only the Date with a DateTime field
+In the output of the query above, showing the Employees in order of
+BirthDate, we see the time of the BirthDate field, which we don’t want.
+Show only the date portion of the BirthDate field.
+
+Solution
+The type of character selected is as 'Date in the original employees table
+
+12Q) Employees full name
+Show the FirstName and LastName columns from the Employees table,
+and then create a new column called FullName, showing FirstName and
+LastName joined together in one column, with a space in-between.
+
+Solution:
+SELECT 
+    First_Name, Last_Name, CONCAT(First_Name, '', Last_Name)
+FROM
+    employees;
+
+
+13Q) OrderDetails amount per line item
+In the OrderDetails table, we have the fields UnitPrice and Quantity.
+Create a new field, TotalPrice, that multiplies these two together. We’ll
+ignore the Discount field for now.
+In addition, show the OrderID, ProductID, UnitPrice, and Quantity.
+Order by OrderID and ProductID.
+
+Solution:
+Select
+       Order_id,
+       Product_id,
+       unit_price,
+       quantity,
+       unit_price * quantity as total_price
+	from Order_details
+    order by Order_id and Product_id;
+
+
+14Q) How many customers?
+How many customers do we have in the Customers table? Show one
+value only, and don’t rely on getting the recordcount at the end of a
+resultset.
+
+Solution:
+    Select
+    count(Customer_id)
+    from customers;
+
+15Q) When was the first order?
+Show the date of the first order ever made in the Orders table.
+
+Solution:
+select min(order_date) from Orders;
+
+16Q) Countries where there are customers
+Show a list of countries where the Northwind company has customers.
+
+Solution:
+ select distinct country from customers;
+
+17Q) Contact titles for customers
+Show a list of all the different values in the Customers table for
+ContactTitles. Also include a count for each ContactTitle.
+This is similar in concept to the previous question “Countries where
+there are customers”
+, except we now want a count for each ContactTitle.
+
+Solution:
+select
+    Contact_title,
+    Count(customer_id) as total
+    from customers
+    group by Contact_title;
+
+18Q) Products with associated supplier names
+We’d like to show, for each product, the associated Supplier. Show the
+ProductID, ProductName, and the CompanyName of the Supplier. Sort
+by ProductID.
+This question will introduce what may be a new concept, the Join clause
+in SQL. The Join clause is used to join two or more relational database
+tables together in a logical way.
+Here’s a data model of the relationship between Products and Suppliers
+
+SOlution:
+ Select
+Product_ID,
+Product_Name,
+Company_name
+From Products
+Join suppliers
+where Products.supplier_id = suppliers.supplier_id;
+
+
+19Q) Orders and the Shipper that was used
+We’d like to show a list of the Orders that were made, including the
+Shipper that was used. Show the OrderID, OrderDate (date only), and
+CompanyName of the Shipper, and sort by OrderID.
+In order to not show all the orders (there’s more than 800), show only
+those rows with an OrderID of less than 10300.
+
+Solution:
+select
+   Order_id,
+   Order_date,
+   Company_name as shippers
+   from Orders
+   Join Shippers
+   where Orders.ship_via = shippers.shipper_id
+and order_id < 10300;
